@@ -91,7 +91,7 @@ def createHashTable():
 def createHashtableIdx():
     """ Creates a SQLite DB Table Index. """
     result = False
-    qry = "CREATE INDEX idxfile ON files"
+    qry = "CREATE INDEX idxfile ON files(file, md5)"
     try:
         conn = connectDb()
         if conn != None:
