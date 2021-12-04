@@ -218,25 +218,40 @@ def loadFlds():
     config = basefile() + '.ini'
     if os.path.isfile(config):
         cfile = open(config, 'r')
-        # Parse each config file line and get the folder and extensions. 
+        # Parse each config file line and get the folder and extensions.
+        for line in cfile:
+            if '|' in line:
+                flds.append(line.split('|')[0])
+                exts = line.split('|')[1]
+                if len(exts) > 0:
+                    ext.append(exts.split(','))
+            else:
+                flds.append(line)
+                ext.append([])
+        cfile.close()
     return flds, ext
 
-def checkFileChanges(folder, exclude, ws):
+def checkFileChanges(folder, exclude):
     """ Checks folder structure for files that have changed """
     changed = False
     for subdir, dirs, files, in os.walk(folder):
         for fname in files:
             origin = os.path.join(subdir, fname)
             if os.path.isfile(origin):
-                # Get file extension and check if it is not excluded
-                # Get the files md5 hash
-                # If the file has changed, add it to the excel report
+                fext = getFileExt(origin)
+                if not fext in exclude:
+                    md5 = md5Short(origin)
+                    if hasChanged(origin, md5):
+                        changed = True
+                        print(f"{origin} has changed.")
     return changed
 
-    def runFileChanges(ws):
-        """ Invoke the function that loads and parses the config file """
-        fldExt = loadFlds()
-        for i in enumerate(fldExt[0]):
-            # Invoke the function that loads and parses the config file
-        return changed
+def runFileChanges():
+    """ Invoke the function that loads and parses the config file """
+    changed = False
+    fldExts = loadFlds()
+    for i , fld in enumerate(fldExts[0]):
+        exts = fldExts[1]
+        changed = checkFileChanges(fld, exts[i], ws)       
+    return changed
 
