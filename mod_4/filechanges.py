@@ -210,3 +210,33 @@ def md5Short(fname):
     """ Get md5 file hash tag. """
     return hashlib.md5(str(fname + '|' + str(getModDate(fname))).encode('utf8')).hexdigest()
 
+def loadFlds():
+    """ Parse the configuration file and return folders to be included
+     and extensions to be excluded. """
+    flds = []
+    ext = []
+    config = basefile() + '.ini'
+    if os.path.isfile(config):
+        cfile = open(config, 'r')
+        # Parse each config file line and get the folder and extensions. 
+    return flds, ext
+
+def checkFileChanges(folder, exclude, ws):
+    """ Checks folder structure for files that have changed """
+    changed = False
+    for subdir, dirs, files, in os.walk(folder):
+        for fname in files:
+            origin = os.path.join(subdir, fname)
+            if os.path.isfile(origin):
+                # Get file extension and check if it is not excluded
+                # Get the files md5 hash
+                # If the file has changed, add it to the excel report
+    return changed
+
+    def runFileChanges(ws):
+        """ Invoke the function that loads and parses the config file """
+        fldExt = loadFlds()
+        for i in enumerate(fldExt[0]):
+            # Invoke the function that loads and parses the config file
+        return changed
+
