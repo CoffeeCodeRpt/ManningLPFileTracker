@@ -255,3 +255,22 @@ def runFileChanges():
         changed = checkFileChanges(fld, exts[i], ws)       
     return changed
 
+def execute(args):
+    if args:
+        if args[0] == '--loop':
+            while True:
+                try:
+                    changed = runFileChanges()
+                except KeyboardInterrupt:
+                    print("You have stopped the file monitoring program.")
+                    print("Please check the program log to view file changes.")
+    else:
+        try:
+            changed = runFileChanges()
+        except:
+            err = sys.exc_info[0]
+            print(err)
+    return changed
+
+if __name__ == '__main__':
+    execute(sys.argv)
